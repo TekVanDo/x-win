@@ -497,6 +497,7 @@ fn get_window_information(hwnd: HWND) -> WindowInfo {
     let position: WindowPosition = get_rect_window(hwnd);
     let re = Regex::new(r"\d+").unwrap();
     let hwnd_id = format!("{:?}", hwnd);
+    println!("hwnd_id {}", hwnd_id);
     let cap = re.captures(&hwnd_id).unwrap();
     let window_id = cap.get(0).unwrap().as_str();
     let id = window_id.parse::<u32>().unwrap();
