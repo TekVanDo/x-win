@@ -500,6 +500,7 @@ fn get_window_information(hwnd: HWND) -> WindowInfo {
     println!("hwnd_id {}", hwnd_id);
     let cap = re.captures(&hwnd_id).unwrap();
     let window_id = cap.get(0).unwrap().as_str();
+    println!("window_id {}", window_id);
     let id = window_id.parse::<u32>().unwrap();
     let parent_process: ProcessInfo = get_process_path_and_name(handle, hwnd, lpdwprocessid);
 
