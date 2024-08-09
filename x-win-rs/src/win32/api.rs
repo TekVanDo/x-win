@@ -497,10 +497,8 @@ fn get_window_information(hwnd: HWND) -> WindowInfo {
     let position: WindowPosition = get_rect_window(hwnd);
     let re = Regex::new(r"0x([0-9a-fA-F]+)").unwrap();
     let hwnd_id = format!("{:?}", hwnd);
-    println!("hwnd_id {}", hwnd_id);
     let cap = re.captures(&hwnd_id).unwrap();
     let window_id = cap.get(0).unwrap().as_str();
-    println!("window_id {}", window_id);
     let hex_str_trimmed = window_id.trim_start_matches("0x");
     let id =
       u32::from_str_radix(hex_str_trimmed, 16).expect("Failed to convert hexadecimal to u32");
