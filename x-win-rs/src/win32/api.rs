@@ -1,6 +1,7 @@
 #![deny(unused_imports)]
 
 use base64::Engine;
+use regex::Regex;
 
 use windows::{
   core::{w, VARIANT},
@@ -494,7 +495,11 @@ fn get_window_information(hwnd: HWND) -> WindowInfo {
 
   if let Ok(handle) = open_process_handle(lpdwprocessid) {
     let position: WindowPosition = get_rect_window(hwnd);
-    let id = unsafe { GetProcessId(handle) };
+    let re = Regex::new(r"\d+").unwrap();
+    let hwnd_id = format!("{:?}", hwnd);
+    let cap = re.captures(&hwnd_id).unwrap();
+    let window_id = cap.get(0).unwrap().as_str();
+    let id = window_id.parse::<u32>().unwrap();
     let parent_process: ProcessInfo = get_process_path_and_name(handle, hwnd, lpdwprocessid);
 
     let mut process_memory_counters = PROCESS_MEMORY_COUNTERS::default();
