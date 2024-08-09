@@ -49,7 +49,7 @@ use windows::{
       Com::*,
       ProcessStatus::PROCESS_MEMORY_COUNTERS,
       Threading::{
-        GetProcessId, OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
+        OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
         PROCESS_QUERY_LIMITED_INFORMATION,
       },
     },
@@ -495,13 +495,15 @@ fn get_window_information(hwnd: HWND) -> WindowInfo {
 
   if let Ok(handle) = open_process_handle(lpdwprocessid) {
     let position: WindowPosition = get_rect_window(hwnd);
-    let re = Regex::new(r"\d+").unwrap();
+    let re = Regex::new(r"0x([0-9a-fA-F]+)").unwrap();
     let hwnd_id = format!("{:?}", hwnd);
     println!("hwnd_id {}", hwnd_id);
     let cap = re.captures(&hwnd_id).unwrap();
     let window_id = cap.get(0).unwrap().as_str();
     println!("window_id {}", window_id);
-    let id = window_id.parse::<u32>().unwrap();
+    let hex_str_trimmed = window_id.trim_start_matches("0x");
+    let id =
+      u32::from_str_radix(hex_str_trimmed, 16).expect("Failed to convert hexadecimal to u32");
     let parent_process: ProcessInfo = get_process_path_and_name(handle, hwnd, lpdwprocessid);
 
     let mut process_memory_counters = PROCESS_MEMORY_COUNTERS::default();
