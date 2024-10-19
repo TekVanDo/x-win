@@ -1,6 +1,7 @@
 #![deny(unused_imports)]
 
 use base64::Engine;
+use regex::Regex;
 
 use windows::{
   core::{w, VARIANT},
