@@ -1,7 +1,6 @@
 #![deny(unused_imports)]
 
 use base64::Engine;
-use regex::Regex;
 
 use windows::{
   core::{w, VARIANT},
@@ -49,7 +48,7 @@ use windows::{
       Com::*,
       ProcessStatus::PROCESS_MEMORY_COUNTERS,
       Threading::{
-        OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
+        GetProcessId, OpenProcess, QueryFullProcessImageNameW, PROCESS_NAME_WIN32,
         PROCESS_QUERY_LIMITED_INFORMATION,
       },
     },
@@ -517,9 +516,9 @@ fn get_window_information(hwnd: HWND) -> WindowInfo {
     let exec_name = parent_process.exec_name.to_lowercase();
     if exec_name.ne(&"searchhost") {
       let mut url: String = "".to_owned();
-      // if is_browser(exec_name.as_str()) {
-      //   get_browser_url(hwnd, exec_name).clone_into(&mut url);
-      // }
+//       if is_browser(exec_name.as_str()) {
+//         get_browser_url(hwnd, exec_name).clone_into(&mut url);
+//       }
       window_info = WindowInfo {
         id,
         os: os_name(),

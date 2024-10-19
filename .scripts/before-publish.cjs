@@ -42,6 +42,7 @@ if (process.env.TAG) {
     console.log('[BEFORE-PUBLISH]', 'Updating package.json...');
 
     packageJson.version = version;
+
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, undefined, 2));
 
     console.log('[BEFORE-PUBLISH]', 'package.json updated.');
